@@ -62,6 +62,7 @@ public class InputUT {
 	public void shouldCreateInputs() throws Exception {
 		// given
 		doAnswer(new ModelAnswer()).when(modelDaoMock).read(any(ModelEntity.class));
+		
 		when(processDaoMock.create(any(ProcessEntity.class))).thenReturn(new Integer(100));
 		
 		ProcessDto process = new ProcessDto();

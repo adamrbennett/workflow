@@ -22,6 +22,26 @@ public class JdbcProcessDao extends JdbcDataAccessObject<ProcessEntity> implemen
 	}
 
 	@Override
+	public Integer create(ProcessEntity entity) throws DataException {
+		return super.create(entity);
+	}
+
+	@Override
+	public void delete(ProcessEntity entity) throws DataException {
+		super.delete(entity);
+	}
+
+	@Override
+	public void read(ProcessEntity entity) throws DataException {
+		super.read(entity);
+	}
+
+	@Override
+	public void update(ProcessEntity entity) throws DataException {
+		super.update(entity);
+	}
+
+	@Override
 	public List<ProcessEntity> findAll() throws DataException {
 		return super.findAll(ProcessEntity.class);
 	}

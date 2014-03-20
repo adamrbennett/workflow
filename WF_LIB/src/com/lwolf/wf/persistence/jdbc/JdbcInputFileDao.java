@@ -22,6 +22,26 @@ public class JdbcInputFileDao extends JdbcDataAccessObject<InputFileEntity> impl
 		super(dataSourceLocator, idLocator);
 	}
 	
+	@Override
+	public Integer create(InputFileEntity entity) throws DataException {
+		return super.create(entity);
+	}
+
+	@Override
+	public void delete(InputFileEntity entity) throws DataException {
+		super.delete(entity);
+	}
+
+	@Override
+	public void read(InputFileEntity entity) throws DataException {
+		super.read(entity);
+	}
+
+	@Override
+	public void update(InputFileEntity entity) throws DataException {
+		super.update(entity);
+	}
+
 	public List<InputFileEntity> findByInput(InputEntity input) throws DataException {
 		Connection conn = null;
 		PreparedStatement ps = null;

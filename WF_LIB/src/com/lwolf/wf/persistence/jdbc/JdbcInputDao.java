@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.lwolf.scud.exceptions.DataException;
@@ -22,6 +23,26 @@ public class JdbcInputDao extends JdbcDataAccessObject<InputEntity> implements I
 		super(dataSourceLocator, idLocator);
 	}
 	
+	@Override
+	public Integer create(InputEntity entity) throws DataException {
+		return super.create(entity);
+	}
+
+	@Override
+	public void delete(InputEntity entity) throws DataException {
+		super.delete(entity);
+	}
+
+	@Override
+	public void read(InputEntity entity) throws DataException {
+		super.read(entity);
+	}
+
+	@Override
+	public void update(InputEntity entity) throws DataException {
+		super.update(entity);
+	}
+
 	public Map<String, InputEntity> findByTask(TaskEntity task) throws DataException {
 		Connection conn = null;
 		PreparedStatement ps = null;

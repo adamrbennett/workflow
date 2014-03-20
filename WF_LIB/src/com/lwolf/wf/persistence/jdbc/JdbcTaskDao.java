@@ -22,6 +22,26 @@ public class JdbcTaskDao extends JdbcDataAccessObject<TaskEntity> implements Tas
 	}
 
 	@Override
+	public Integer create(TaskEntity entity) throws DataException {
+		return super.create(entity);
+	}
+
+	@Override
+	public void delete(TaskEntity entity) throws DataException {
+		super.delete(entity);
+	}
+
+	@Override
+	public void read(TaskEntity entity) throws DataException {
+		super.read(entity);
+	}
+
+	@Override
+	public void update(TaskEntity entity) throws DataException {
+		super.update(entity);
+	}
+
+	@Override
 	public List<TaskEntity> findAll() throws DataException {
 		return super.findAll(TaskEntity.class);
 	}

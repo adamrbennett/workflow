@@ -16,6 +16,26 @@ public class JdbcModelDao extends JdbcDataAccessObject<ModelEntity> implements M
 	}
 
 	@Override
+	public Integer create(ModelEntity entity) throws DataException {
+		return super.create(entity);
+	}
+
+	@Override
+	public void delete(ModelEntity entity) throws DataException {
+		super.delete(entity);
+	}
+
+	@Override
+	public void read(ModelEntity entity) throws DataException {
+		super.read(entity);
+	}
+
+	@Override
+	public void update(ModelEntity entity) throws DataException {
+		super.update(entity);
+	}
+
+	@Override
 	public List<ModelEntity> findAll() throws DataException {
 		return super.findAll(ModelEntity.class);
 	}
