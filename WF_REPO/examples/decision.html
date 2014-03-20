@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<script id="process-script" type="text/javascript">
+	function invoke() {
+		decision = process.create("decision");
+		
+		today = new Date();
+		
+		due = new Date();
+		due.setDate(today.getDate() + 30);
+		decision.dueOn = due;
+	}
+</script>
+</head>
+<body>
+
+<form
+	id="decision"
+	data-name="Decision"
+	data-role="agent"
+	data-options='
+		[
+			{
+				"label": "Yes, I want to!",
+				"value": "yes"
+			},
+			{
+				"label": "No way!",
+				"value": "no"
+			},
+			{
+				"label": "Maybe...",
+				"value": "maybe"
+			}
+		]
+	'>
+		<script id="task-script" type="text/javascript">
+			function completed() {
+				decision = process.get("decision");
+				
+				if (decision.decision == "yes") {
+					result = process.create("yes");
+				} else if (decision.decision == "no") {
+					result = process.create("no");
+				} else if (decision.decision == "maybe") {
+					result = process.create("maybe");
+				}
+				result.decisionResult = decision.decision;
+			}
+		</script>
+</form>
+
+<form
+	id="yes"
+	data-name="Yes"
+	data-role="agent">
+		<script id="task-script" type="text/javascript">
+			function completed() {
+			}
+		</script>
+		
+		<div class="form-group">
+			<label class="control-label" for="decisionResult">Decision</label>
+			<input name="decisionResult" type="text" class="form-control" placeholder="Decision">
+			<span class="help-block"></span>
+		</div>
+</form>
+
+<form
+	id="no"
+	data-name="No"
+	data-role="agent">
+		<script id="task-script" type="text/javascript">
+			function completed() {
+			}
+		</script>
+		
+		<div class="form-group">
+			<label class="control-label" for="decisionResult">Decision</label>
+			<input name="decisionResult" type="text" class="form-control" placeholder="Decision">
+			<span class="help-block"></span>
+		</div>
+</form>
+
+<form
+	id="maybe"
+	data-name="Maybe"
+	data-role="agent">
+		<script id="task-script" type="text/javascript">
+			function completed() {
+			}
+		</script>
+		
+		<div class="form-group">
+			<label class="control-label" for="decisionResult">Decision</label>
+			<input name="decisionResult" type="text" class="form-control" placeholder="Decision">
+			<span class="help-block"></span>
+		</div>
+</form>
+
+</body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Workflow</title>
+	
+	<meta charset="ISO-8859-1">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/jquery.pnotify.default.css">
+
+	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+	<!--[if lt IE 9]>
+		<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+		<script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+	<![endif]-->
+
+	<link rel="stylesheet" href="css/style.css">
+
+</head>
+<body id="top">
+
+	<div class="navbar navbar-default navbar-static-top" role="navigation">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="/wf/admin/">Workflow</a>
+			</div>
+			<div class="navbar-collapse collapse">
+				<ul class="nav navbar-nav">
+					<li class="menu model-menu"><a href="#model/list">Models</a></li>
+					<li class="menu process-menu"><a href="#process/list">Processes</a></li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="user-name"></span> <span class="caret"></span></a>
+						<ul class="dropdown-menu">
+							<li><a href="#"><span class="glyphicon glyphicon-question-sign dropdown-icon"></span> Help</a></li>
+							<li><a href="logout"><span class="glyphicon glyphicon-off dropdown-icon"></span> Logout</a></li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	
+	<div id="content" class="container"></div>
+
+	<script src="https://code.jquery.com/jquery.js"></script>
+	<script src="lib/underscore-min.js"></script>
+	<script src="lib/backbone-min.js"></script>
+	<script src="lib/bootstrap.min.js"></script>
+	<script src="lib/bootstrap-maxlength.min.js"></script>
+	<script src="lib/jquery.pnotify.js"></script>
+	
+	<script src="js/utils.js"></script>
+	
+	<script src="js/models/File.js"></script>
+	<script src="js/models/Input.js"></script>
+	<script src="js/models/InputFile.js"></script>
+	<script src="js/models/Process.js"></script>
+	<script src="js/models/Model.js"></script>
+	<script src="js/models/Task.js"></script>
+	<script src="js/models/User.js"></script>
+	
+	<script src="js/forms/ProcessForm.js"></script>
+	<script src="js/forms/ModelForm.js"></script>
+	<script src="js/forms/TaskForm.js"></script>
+	
+	<script src="js/views/FileListView.js"></script>
+	<script src="js/views/FileListItemView.js"></script>
+	<script src="js/views/FormControlsView.js"></script>
+	<script src="js/views/FormMessagesView.js"></script>
+	<script src="js/views/InputListView.js"></script>
+	<script src="js/views/InputListItemView.js"></script>
+	<script src="js/views/ProcessListView.js"></script>
+	<script src="js/views/ModelListView.js"></script>
+	<script src="js/views/TaskListView.js"></script>
+	<script src="js/views/TaskListItemView.js"></script>
+	<script src="js/views/WelcomeView.js"></script>
+	
+	<script src="js/main.js"></script>
+	
+</body>
+</html>

@@ -1,0 +1,25 @@
+<div class="page-header">
+	<h2><%= name %> <small><a data-toggle="collapse" href="#revisions">revision history</a></small></h2>
+</div>
+<div id="revisions" class="collapse">
+	<div class="form-group">
+		<label class="control-label">Created By</label>
+		<p class="form-control-static"><%= createdBy %></p>
+	</div>
+	<div class="form-group">
+		<label class="control-label">Created On</label>
+		<p class="form-control-static createdOn"></p>
+	</div>
+	<div class="form-group">
+		<label class="control-label">Modified By</label>
+		<p class="form-control-static"><%= modifiedBy %></p>
+	</div>
+	<div class="form-group">
+		<label class="control-label">Modified On</label>
+		<p class="form-control-static modifiedOn"></p>
+	</div>
+</div>
+<div class="form-messages"></div>
+<form id="form" role="form"></form>
+<hr>
+<div class="form-controls"></div>

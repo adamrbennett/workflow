@@ -1,0 +1,11 @@
+<td class="name"></td>
+<td class="dueOn"></td>
+<td class="options">
+	<select class="form-control" style="display:none">
+		<option value="" selected disabled>Select an option...</option>
+	</select>
+</td>
+<td class="actions text-right">
+	<a class="btn btn-success complete" style="display:none" data-process-id="<%= processId %>" data-task-id="<%= taskId %>">Complete</a>
+	<a class="btn btn-default edit" style="display:none" href="#process/<%= processId %>/task/<%= taskId %>">Edit</a>
+</td>

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<script id="process-script" type="text/javascript">
+	function invoke() {
+		process.create("notice");
+		process.create("decision");
+		process.create("form");
+	}
+</script>
+</head>
+<body>
+
+<form
+	id="notice"
+	data-name="Notice"
+	data-role="agent">
+		<script id="task-script" type="text/javascript">
+			function completed() {
+			}
+		</script>
+</form>
+
+<form
+	id="decision"
+	data-name="Decision"
+	data-role="agent"
+	data-options='
+		[
+			{
+				"label": "Option 1",
+				"value": "1"
+			},
+			{
+				"label": "Option 2",
+				"value": "2"
+			}
+		]
+	'>
+		<script id="task-script" type="text/javascript">
+			function completed() {
+			}
+		</script>
+</form>
+
+<form
+	id="form"
+	data-name="Form"
+	data-role="agent">
+		<script id="task-script" type="text/javascript">
+			function completed() {
+			}
+		</script>
+		
+		<div class="form-group">
+			<label>
+				Checkbox
+				<input name="sampleCheckbox" type="checkbox" value="checkIt">
+			</label>
+			<span class="help-block"></span>
+		</div>
+		
+		<div class="form-group">
+			<label>
+				Color
+				<input name="sampleColor" type="color">
+			</label>
+			<span class="help-block"></span>
+		</div>
+		
+		<div class="form-group">
+			<label class="control-label" for="sampleDate">Date</label>
+			<input name="sampleDate" type="date" class="form-control" placeholder="Date">
+			<span class="help-block"></span>
+		</div>
+		
+		<div class="form-group">
+			<label class="control-label" for="sampleDateTime">Date/Time</label>
+			<input name="sampleDateTime" type="datetime" class="form-control" placeholder="Date/Time">
+			<span class="help-block"></span>
+		</div>
+		
+		<div class="form-group">
+			<label class="control-label" for="sampleEmail">Email</label>
+			<input name="sampleEmail" type="email" class="form-control" placeholder="Email">
+			<span class="help-block"></span>
+		</div>
+		
+		<div class="form-group">
+			<label class="control-label" for="sampleFiles">Files</label>
+			<input name="sampleFiles" type="file" class="form-control" placeholder="Files" multiple="multiple">
+			<span class="help-block"></span>
+		</div>
+		
+		<div class="form-group">
+			<label class="control-label" for="sampleMonth">Month</label>
+			<input name="sampleMonth" type="month" class="form-control" placeholder="Month">
+			<span class="help-block"></span>
+		</div>
+		
+		<div class="form-group">
+			<label class="control-label" for="sampleNumber">Number</label>
+			<input name="sampleNumber" type="number" class="form-control" placeholder="Number">
+			<span class="help-block"></span>
+		</div>
+		
+		<div class="form-group">
+			<label class="control-label" for="samplePassword">Password</label>
+			<input name="samplePassword" type="password" class="form-control" placeholder="Password">
+			<span class="help-block"></span>
+		</div>
+		
+		<div class="form-group">
+			<label class="control-label" for="sampleRadio">Radio</label>
+			<div class="radio">
+				<label>
+					<input name="sampleRadio" type="radio" value="radio1">
+					Radio number 1
+				</label>
+			</div>
+			<div class="radio">
+				<label>
+					<input name="sampleRadio" type="radio" value="radio2">
+					Radio number 2
+				</label>
+			</div>
+			<div class="radio">
+				<label>
+					<input name="sampleRadio" type="radio" value="radio3">
+					Radio number 3
+				</label>
+			</div>
+			<span class="help-block"></span>
+		</div>
+		
+		<div class="form-group">
+			<label class="control-label" for="sampleRange">Range</label>
+			<span class="middle">1</span>
+			<input name="sampleRange" type="range" placeholder="Range" min="1" max="10" class="middle">
+			<span class="middle">10</span>
+			<span class="help-block"></span>
+		</div>
+		
+		<div class="form-group">
+			<label class="control-label">Select</label>
+			<select name="sampleSelect" class="form-control">
+				<option value="option1">Option 1</option>
+				<option value="option2">Option 2</option>
+				<option value="option3">Option 3</option>
+			</select>
+		</div>
+		
+		<div class="form-group">
+			<label class="control-label" for="sampleTelephone">Telephone</label>
+			<input name="sampleTelephone" type="tel" class="form-control" placeholder="Telephone">
+			<span class="help-block"></span>
+		</div>
+		
+		<div class="form-group">
+			<label class="control-label" for="sampleText">Text</label>
+			<input name="sampleText" type="text" class="form-control" placeholder="Text">
+			<span class="help-block"></span>
+		</div>
+		
+		<div class="form-group">
+			<label class="control-label" for="sampleTextarea">Textarea</label>
+			<textarea name="sampleTextarea" class="form-control" rows="4" placeholder="Textarea"></textarea>
+			<span class="help-block"></span>
+		</div>
+		
+		<div class="form-group">
+			<label class="control-label" for="sampleTime">Time</label>
+			<input name="sampleTime" type="time" class="form-control" placeholder="Time">
+			<span class="help-block"></span>
+		</div>
+		
+		<script type="text/javascript">
+			$(document).ready(function() {
+			});
+		</script>
+</form>
+
+</body>
+</html>

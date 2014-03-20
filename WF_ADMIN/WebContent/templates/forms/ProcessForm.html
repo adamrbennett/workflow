@@ -1,0 +1,41 @@
+<div class="page-header">
+	<h2>Process <small><a id="revisionsLink" data-toggle="collapse" href="#revisions">revision history</a></small></h2>
+</div>
+<div class="form-messages"></div>
+<form role="form">
+	<div id="revisions" class="collapse">
+		<div class="form-group">
+			<label class="control-label">Created By</label>
+			<p class="form-control-static"><%= createdBy %></p>
+		</div>
+		<div class="form-group">
+			<label class="control-label">Created On</label>
+			<p class="form-control-static createdOn"></p>
+		</div>
+		<div class="form-group">
+			<label class="control-label">Modified By</label>
+			<p class="form-control-static"><%= modifiedBy %></p>
+		</div>
+		<div class="form-group">
+			<label class="control-label">Modified On</label>
+			<p class="form-control-static modifiedOn"></p>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="control-label" for="modelId">Model</label>
+		<select id="modelId" name="modelId" class="form-control"></select>
+		<span class="help-block"></span>
+	</div>
+	<div class="form-group">
+		<label class="control-label" for="name">Name</label>
+		<input type="text" name="name" class="form-control" id="name" placeholder="Name" value="<%= name %>">
+		<span class="help-block">
+			<% if (typeof processId == 'undefined') { %>
+				Name will default to that of the model, if none is specified
+			<% } %>
+		</span>
+	</div>
+	<div class="process-tasks"></div>
+	<hr>
+	<div class="form-controls"></div>
+</form>

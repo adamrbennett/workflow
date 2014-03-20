@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ======================================================================
+     Jan 22, 2014 3:24:22 PM
+
+     Workflow
+     Build the workflow app
+
+     Adam
+     ====================================================================== -->
+<project name="Workflow" default="build">
+	<description>
+            Build the workflow app
+    </description>
+	
+	<property name="mysql.bin" value="C:${file.separator}Program Files${file.separator}MySQL${file.separator}MySQL Server 5.6${file.separator}bin"/>
+	<property name="tomee.lib" value="C:${file.separator}Program Files${file.separator}apache-tomee-jaxrs-1.6.0${file.separator}lib"/>
+	
+	<property name="build" value="build"/>
+	<property name="build.test" value="build${file.separator}WF_TEST"/>
+	<property name="build.lib" value="build${file.separator}WF_LIB"/>
+	<property name="dist" value="dist"/>
+	
+	<property name="test.results" value="test-results"/>
+	<property name="test.project" value="../WF_TEST"/>
+	<property name="test.src" value="${test.project}${file.separator}src"/>
+	<property name="lib.project" value="../WF_LIB"/>
+	<property name="lib.src" value="${lib.project}${file.separator}src"/>
+
+    <!-- + + + + + + + + + + + + + + + + + 
+          classpath: test.classpath
+         + + + + + + + + + + + + + + + + + -->
+	<path id="test.classpath">
+		<fileset dir="${tomee.lib}">
+			<include name="*.jar"/>
+		</fileset>
+		<fileset dir="${test.project}">
+			<include name="*.jar"/>
+		</fileset>
+		<fileset dir="${lib.project}">
+			<include name="*.jar"/>
+		</fileset>
+		<fileset dir="${dist}">
+			<include name="*.jar"/>
+		</fileset>
+	</path>
+
+    <!-- + + + + + + + + + + + + + + + + + 
+          classpath: lib.classpath
+         + + + + + + + + + + + + + + + + + -->
+	<path id="lib.classpath">
+		<fileset dir="${tomee.lib}">
+			<include name="*.jar"/>
+		</fileset>
+		<fileset dir="${lib.project}">
+			<include name="*.jar"/>
+		</fileset>
+	</path>
+
+    <!-- * * * * * * * * * * * * * * * * * 
+          macro: mysql.exec
+         * * * * * * * * * * * * * * * * * -->
+	<macrodef name="mysql.exec" description="Executes mysql commands using the command line processor">
+		<attribute name="cmd"/>
+		<attribute name="db" default=""/>
+		<sequential>
+			<exec executable="${mysql.bin}${file.separator}mysql.exe">
+				<arg value="-uroot"/>
+				<arg value="-pmysql"/>
+				<arg value="@{db}"/>
+				<arg value="-e"/>
+				<arg value="@{cmd}"/>
+			</exec>
+		</sequential>
+	</macrodef>
+	
+    <!-- =================================
+          target: build
+         ================================= -->
+    <target name="build" depends="init, test.unit" description="Build the workflow app">
+        
+    </target>
+
+    <!-- - - - - - - - - - - - - - - - - - 
+          target: init
+         - - - - - - - - - - - - - - - - - -->
+    <target name="init" description="Initialize directories">
+    	<delete dir="${build}"/>
+    	<delete dir="${dist}"/>
+    	<delete dir="${test.results}"/>
+    	<mkdir dir="${build}"/>
+    	<mkdir dir="${dist}"/>
+    	<mkdir dir="${test.results}"/>
+    </target>
+
+    <!-- - - - - - - - - - - - - - - - - - 
+          target: test.all
+         - - - - - - - - - - - - - - - - - -->
+    <target name="test.all" depends="init, test.unit, test.integration" description="Run all tests">
+    </target>
+
+    <!-- - - - - - - - - - - - - - - - - -
+          target: test.unit
+         - - - - - - - - - - - - - - - - - -->
+    <target name="test.unit" depends="lib.export, test.export" description="Execute unit tests">
+    	<junit printsummary="yes" haltonfailure="yes">
+    		<classpath refid="test.classpath"/>
+			<formatter type="xml"/>
+			<formatter type="plain"/>
+    		<batchtest fork="yes" todir="${test.results}">
+    			<resources>
+    				<zipfileset src="${dist}${file.separator}WF_TEST.jar" includes="**/unit/**/*UT.class"/>
+    			</resources>
+    		</batchtest>
+    	</junit>
+    	<junitreport tofile="TESTS-TestSuites.xml" todir="${test.results}">
+    		<fileset dir="${test.results}">
+    			<include name="TEST-*.xml"/>
+    		</fileset>
+    		<report todir="${test.results}"/>
+    	</junitreport>
+    </target>
+
+    <!-- - - - - - - - - - - - - - - - - -
+          target: test.integration
+         - - - - - - - - - - - - - - - - - -->
+    <target name="test.integration" depends="db.create, lib.export, test.export" description="Execute integration tests">
+    	<junit printsummary="yes" haltonfailure="yes">
+    		<classpath refid="test.classpath"/>
+			<formatter type="xml"/>
+    		<batchtest fork="yes" todir="${test.results}">
+    			<resources>
+    				<zipfileset src="${dist}${file.separator}WF_TEST.jar" includes="**/integration/**/*IT.class"/>
+    			</resources>
+    		</batchtest>
+    	</junit>
+    	<junitreport tofile="TESTS-TestSuites.xml" todir="${test.results}">
+    		<fileset dir="${test.results}">
+    			<include name="TEST-*.xml"/>
+    		</fileset>
+    		<report todir="${test.results}"/>
+    	</junitreport>
+    </target>
+
+    <!-- - - - - - - - - - - - - - - - - -
+          target: test.compile
+         - - - - - - - - - - - - - - - - - -->
+    <target name="test.compile" description="Compile tests">
+    	<mkdir dir="${build.test}${file.separator}classes"/>
+    	<javac destdir="${build.test}${file.separator}classes" includeantruntime="false" debug="on">
+    		<src path="${test.src}"/>
+    		<classpath refid="test.classpath"/>
+    	</javac>
+    	<copy overwrite="true" todir="${build.test}${file.separator}classes">
+    		<fileset dir="${test.src}">
+    			<include name="**/**"/>
+    		</fileset>
+    	</copy>
+    </target>
+
+    <!-- - - - - - - - - - - - - - - - - - 
+          target: test.export
+         - - - - - - - - - - - - - - - - - -->
+    <target name="test.export" depends="test.compile" description="JAR tests">
+    	<jar jarfile="${dist}${file.separator}WF_TEST.jar" basedir="${build.test}${file.separator}classes">
+    	</jar>
+    </target>
+
+    <!-- - - - - - - - - - - - - - - - - -
+          target: lib.compile
+         - - - - - - - - - - - - - - - - - -->
+    <target name="lib.compile" description="Compile workflow library">
+    	<mkdir dir="${build.lib}${file.separator}classes"/>
+    	<javac destdir="${build.lib}${file.separator}classes" includeantruntime="false" debug="on">
+    		<src path="${lib.src}"/>
+    		<classpath refid="lib.classpath"/>
+    	</javac>
+    </target>
+
+    <!-- - - - - - - - - - - - - - - - - - 
+          target: lib.export
+         - - - - - - - - - - - - - - - - - -->
+    <target name="lib.export" depends="lib.compile" description="JAR workflow library">
+    	<jar jarfile="${dist}${file.separator}WF_LIB.jar" basedir="${build.lib}${file.separator}classes">
+    	</jar>
+    </target>
+
+    <!-- - - - - - - - - - - - - - - - - - 
+          target: db.dump
+         - - - - - - - - - - - - - - - - - -->
+	<target name="db.dump" description="Generate the database script">
+		<exec executable="${mysql.bin}${file.separator}mysqldump.exe">
+			<arg value="--user=tomcat"/>
+			<arg value="--password=tomcat"/>
+			<arg value="--host=localhost"/>
+			<arg value="--port=3306"/>
+			<arg value="--no-data"/>
+			<arg value="--result-file=workflow.sql"/>
+			<arg value="workflow"/>
+		</exec>
+	</target>
+
+    <!-- - - - - - - - - - - - - - - - - - 
+          target: db.drop
+         - - - - - - - - - - - - - - - - - -->
+	<target name="db.drop" description="Drop the test database if it exists">
+		<mysql.exec cmd="drop database if exists workflowtest"/>
+	</target>
+
+    <!-- - - - - - - - - - - - - - - - - - 
+          target: db.create
+         - - - - - - - - - - - - - - - - - -->
+	<target name="db.create" depends="db.dump, db.drop" description="Create and initialize a new test database">
+		<mysql.exec cmd="create database workflowtest"/>
+		<mysql.exec db="workflowtest" cmd="source C:/Users/Adam/Workspaces/eclipse/workflow/WF_BUILD/workflow.sql"/>
+		<mysql.exec db="workflowtest" cmd="source C:/Users/Adam/Workspaces/eclipse/workflow/WF_BUILD/data.sql"/>
+	</target>
+
+</project>

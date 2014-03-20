@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<script id="process-script" type="text/javascript">
+	function invoke() {
+		// create the uploadFiles task
+		process.create("uploadFiles");
+	}
+	
+	// utility function for formatting comments
+	function formatComment(commentText) {
+		var comment = {
+			user: user.name,
+			timestamp: utils.formatTimestamp(new Date(), "long"),
+			text: commentText
+		};
+		return JSON.stringify(comment);
+	}
+	
+	// utility function for handling comments
+	function handleComments(commentText, commentList) {
+		if (utils.isNull(commentText) && utils.isNull(commentList)) {
+			return null;
+		} else if (utils.isNull(commentText) && !utils.isNull(commentList)) {
+			return commentList;
+		} else if (!utils.isNull(commentText) && utils.isNull(commentList)) {
+			return formatComment(commentText);
+		} else {
+			commentList += ("," + formatComment(commentText));
+			return commentList;
+		}
+	}
+</script>
+</head>
+<body>
+
+<form
+	id="uploadFiles"
+	data-name="Upload Files"
+	data-role="agent">
+		<script id="task-script" type="text/javascript">
+			function completed() {
+				// create the reviewFiles task
+				var reviewFiles = process.create("reviewFiles");
+				
+				// get this task
+				var uploadFiles = process.get("uploadFiles");
+				
+				// re-open reviewFiles task (if it exists already)
+				reviewFiles.completedOn = null;
+				
+				// carry files forward
+				reviewFiles.files = uploadFiles.files;
+				
+				// carry comments forward
+				var comments = handleComments(uploadFiles.comment, uploadFiles.comments);
+				reviewFiles.comments = comments;
+				uploadFiles.comments = comments;
+				uploadFiles.comment = null;
+			}
+		</script>
+		
+		<div class="form-group">
+			<label class="control-label" for="files">Files</label>
+			<input name="files" type="file" class="form-control" placeholder="Files" multiple="multiple">
+			<span class="help-block"></span>
+		</div>
+
+		<div class="panel panel-default">
+			<div name="something" class="panel-heading">
+				<strong>Comments</strong>
+			</div>
+			<textarea name="comments" data-list="list" data-list-format="<span class='glyphicon glyphicon-comment'></span> <strong>{user}</strong> - <i>{timestamp}</i><blockquote>{text}</blockquote>"></textarea>
+			<div class="panel-footer">
+				<textarea name="comment" class="form-control" rows="4" placeholder="Enter new comment"></textarea>
+			</div>
+		</div>
+		
+		<script type="text/javascript">
+			$(document).ready(function() {
+				
+				// task validation
+				window.taskValidator = function(attrs, options) {
+					var errors = [];
+					
+					// require that at least one file is entered
+					if (attrs.inputs.files.files == null || attrs.inputs.files.files.length == 0) {
+						errors.push({
+							attr: "files",
+							message: "You must provide at least one file"
+						});
+					}
+					
+					if (errors.length) {
+						return errors;
+					}
+				};
+			});
+		</script>
+</form>
+
+<form
+	id="reviewFiles"
+	data-name="Review Files"
+	data-role="agent"
+	data-buttons='
+		[
+			{
+				"label": "Accept",
+				"type": "success",
+				"handler": "accept"
+			},
+			{
+				"label": "Reject",
+				"type": "danger",
+				"handler": "reject"
+			}
+		]
+	'>
+		<script id="task-script" type="text/javascript">
+			function accept() {
+				// create the accepted task
+				process.create("accepted");
+			}
+			function reject() {
+				// get the uploadFiles task
+				var uploadFiles = process.get("uploadFiles");
+				
+				// get this task
+				var reviewFiles = process.get("reviewFiles");
+				
+				// re-open uploadFiles task
+				uploadFiles.completedOn = null;
+				
+				// carry files forward
+				// Note: this is truly not necessary,
+				// because the files cannot be modified on this task,
+				// and they already exist on the previous task
+				uploadFiles.files = reviewFiles.files;
+				
+				// carry comments forward
+				var comments = handleComments(reviewFiles.comment, reviewFiles.comments);
+				uploadFiles.comments = comments;
+				reviewFiles.comments = comments;
+				reviewFiles.comment = null;
+			}
+		</script>
+		
+		<div class="form-group">
+			<label class="control-label" for="files">Files</label>
+			<input name="files" type="file" class="form-control" placeholder="Files" multiple="multiple" readonly="readonly">
+			<span class="help-block"></span>
+		</div>
+
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<strong>Comments</strong>
+			</div>
+			<textarea name="comments" data-list="list" data-list-format="<span class='glyphicon glyphicon-comment'></span> <strong>{user}</strong><blockquote>{text}</blockquote><i>{timestamp}</i>" class="form-control" rows="4" readonly="readonly"></textarea>
+			<div class="panel-footer">
+				<textarea name="comment" class="form-control" rows="4" placeholder="Enter new comment"></textarea>
+			</div>
+		</div>
+		
+		<script type="text/javascript">
+			$(document).ready(function() {
+			});
+		</script>
+</form>
+
+<form
+	id="accepted"
+	data-name="Accepted"
+	data-role="agent">
+		<script id="task-script" type="text/javascript">
+			function completed() {
+			}
+		</script>
+</form>
+
+</body>
+</html>

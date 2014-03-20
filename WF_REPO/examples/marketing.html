@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<script id="process-script" type="text/javascript">
+	function invoke() {
+		process.create("chooseMarketing");
+	}
+</script>
+</head>
+<body>
+
+<form
+	id="chooseMarketing"
+	data-name="Choose Marketing"
+	data-role="agent">
+		<script id="task-script" type="text/javascript">
+			function completed() {
+				order = process.create("orderMarketing");
+				choose = process.get("chooseMarketing");
+				
+				if (choose.brochure == "brochure") {
+					order.brochure = choose.brochure;
+					order.headline = choose.headline;
+					order.shortCopy = choose.shortCopy;
+					order.longCopy = choose.longCopy;
+				}
+				
+				if (choose.flyer == "flyer") {
+					order.flyer = choose.flyer;
+					order.flyerText = choose.flyerText;
+					order.flyerPhoto = choose.flyerPhoto;
+				}
+				
+				if (choose.eblast == "eblast") {
+					order.eblast = choose.eblast;
+					order.eblastText = choose.eblastText;
+				}
+			}
+		</script>
+		
+		<h3>What kind of marketing would you like to order?</h3>
+		
+		<div class="form-group">
+			<label>
+				<input name="brochure" type="checkbox" value="brochure">
+				Brochure
+			</label>
+			<span class="help-block"></span>
+		</div>
+		<div id="brochureGroup">
+			<div class="form-group">
+				<label class="control-label" for="headline">Headline</label>
+				<input name="headline" type="text" class="form-control maxlength" required="required" placeholder="Enter headline here" maxlength="50">
+				<span class="help-block">Maximum length: 50 characters</span>
+			</div>
+			<div class="form-group">
+				<label class="control-label" for="shortCopy">Short Copy</label>
+				<textarea name="shortCopy" class="form-control maxlength" required="required" rows="4" placeholder="Enter short copy here" maxlength="250"></textarea>
+				<span class="help-block">Maximum length: 250 characters</span>
+			</div>
+			<div class="form-group">
+				<label class="control-label" for="longCopy">Long Copy</label>
+				<textarea name="longCopy" class="form-control maxlength" required="required" rows="6" placeholder="Enter long copy here" maxlength="500"></textarea>
+				<span class="help-block">Maximum length: 500 characters</span>
+			</div>
+		</div>
+		
+		<div class="form-group">
+			<label>
+				<input name="flyer" type="checkbox" value="flyer">
+				Flyer
+			</label>
+			<span class="help-block"></span>
+		</div>
+		<div id="flyerGroup">
+			<div class="form-group">
+				<label class="control-label" for="flyerText">Flyer Text</label>
+				<textarea name="flyerText" class="form-control maxlength" rows="4" required="required" placeholder="Enter flyer text here" maxlength="150"></textarea>
+				<span class="help-block">Maximum length: 150 characters</span>
+			</div>
+			<div class="form-group">
+				<label>
+					Include photo?
+					<input name="flyerPhoto" type="checkbox" value="flyerPhoto">
+				</label>
+				<span class="help-block"></span>
+			</div>
+		</div>
+		
+		<div class="form-group">
+			<label>
+				<input name="eblast" type="checkbox" value="eblast">
+				eBlast
+			</label>
+			<span class="help-block"></span>
+		</div>
+		<div id="eblastGroup">
+			<div class="form-group">
+				<label class="control-label" for="eblastText">eBlast Text</label>
+				<textarea name="eblastText" class="form-control maxlength" required="required" rows="4" placeholder="Enter eBlast text here" maxlength="100"></textarea>
+				<span class="help-block">Maximum length: 100 characters</span>
+			</div>
+		</div>
+		
+		<script type="text/javascript">
+			$(document).ready(function() {
+				// initialize maxlength counter
+				$(".maxlength").maxlength({
+					alwaysShow: true
+				});
+				
+				// initialize groups
+				brochureCheck = $("input[name='brochure']");
+				flyerCheck = $("input[name='flyer']");
+				eblastCheck = $("input[name='eblast']");
+				
+				brochureGroup = $("#brochureGroup");
+				flyerGroup = $("#flyerGroup");
+				eblastGroup = $("#eblastGroup");
+				
+				brochureGroup.toggle(brochureCheck.prop("checked"));
+				flyerGroup.toggle(flyerCheck.prop("checked"));
+				eblastGroup.toggle(eblastCheck.prop("checked"));
+				
+				// listen for changes
+				brochureCheck.change(function() {
+					brochureGroup.toggle(this.checked);
+				});
+				flyerCheck.change(function() {
+					flyerGroup.toggle(this.checked);
+				});
+				eblastCheck.change(function() {
+					eblastGroup.toggle(this.checked);
+				});
+				
+				window.taskValidator = function(attrs, options) {
+					var errors = [];
+					
+					if (attrs.inputs.brochure.value == "brochure") {
+						if (attrs.inputs.headline.value == null || attrs.inputs.headline.value.length <= 0) {
+							errors.push({
+								attr: "headline",
+								message: "You must provide a headline"
+							});
+						}
+						if (attrs.inputs.shortCopy.value == null || attrs.inputs.shortCopy.value.length <= 0) {
+							errors.push({
+								attr: "shortCopy",
+								message: "You must provide a short copy"
+							});
+						}
+						if (attrs.inputs.longCopy.value == null || attrs.inputs.longCopy.value.length <= 0) {
+							errors.push({
+								attr: "longCopy",
+								message: "You must provide a long copy"
+							});
+						}
+					}
+					
+					if (attrs.inputs.flyer.value == "flyer") {
+						if (attrs.inputs.flyerText.value == null || attrs.inputs.flyerText.value.length <= 0) {
+							errors.push({
+								attr: "flyerText",
+								message: "Flyer text is required"
+							});
+						}
+					}
+					
+					if (attrs.inputs.eblast.value == "eblast") {
+						if (attrs.inputs.eblastText.value == null || attrs.inputs.eblastText.value.length <= 0) {
+							errors.push({
+								attr: "eblastText",
+								message: "eBlast text is required"
+							});
+						}
+					}
+					
+					if (errors.length) {
+						return errors;
+					}
+				};
+			});
+		</script>
+</form>
+
+<form
+	id="orderMarketing"
+	data-name="Order Marketing"
+	data-role="marketing">
+		<script id="task-script" type="text/javascript">
+			function completed() {
+			}
+		</script>
+		
+		<input name="brochure" type="hidden">
+		<input name="flyer" type="hidden">
+		<input name="eblast" type="hidden">
+		
+		<h3>Order requested marketing</h3>
+		
+		<ol>
+			<li id="brochureGroup" style="display:none">
+				<h4>Brochure</h4>
+				<div class="form-group">
+					<label class="control-label" for="headline">Headline</label>
+					<input name="headline" readonly="readonly" type="text" class="form-control">
+				</div>
+				<div class="form-group">
+					<label class="control-label" for="shortCopy">Short Copy</label>
+					<textarea name="shortCopy" readonly="readonly" class="form-control" rows="4"></textarea>
+				</div>
+				<div class="form-group">
+					<label class="control-label" for="longCopy">Long Copy</label>
+					<textarea name="longCopy" readonly="readonly" class="form-control" rows="6"></textarea>
+				</div>
+			</li>
+			<li id="flyerGroup" style="display:none">
+				<h4>Flyer</h4>
+				<div class="form-group">
+					<label class="control-label" for="flyerText">Flyer Text</label>
+					<textarea name="flyerText" readonly="readonly" class="form-control" rows="4"></textarea>
+				</div>
+				<div class="form-group">
+					<label>
+						Include photo?
+						<input name="flyerPhoto" disabled="disabled" type="checkbox" value="flyerPhoto">
+					</label>
+				</div>
+			</li>
+			<li id="eblastGroup" style="display:none">
+				<h4>eBlast</h4>
+				<div class="form-group">
+					<label class="control-label" for="eblastText">eBlast Text</label>
+					<textarea name="eblastText" readonly="readonly" class="form-control" rows="4"></textarea>
+				</div>
+			</li>
+		</ol>
+		
+		<script type="text/javascript">
+			$(document).ready(function() {
+				// initialize groups
+				brochureCheck = $("input[name='brochure']");
+				flyerCheck = $("input[name='flyer']");
+				eblastCheck = $("input[name='eblast']");
+				
+				brochureGroup = $("#brochureGroup");
+				flyerGroup = $("#flyerGroup");
+				eblastGroup = $("#eblastGroup");
+				
+				if (brochureCheck.val() == "brochure") {
+					brochureGroup.show();
+				}
+				if (flyerCheck.val() == "flyer") {
+					flyerGroup.show();
+				}
+				if (eblastCheck.val() == "eblast") {
+					eblastGroup.show();
+				}
+			});
+		</script>
+</form>
+
+</body>
+</html>

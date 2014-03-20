@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<script id="process-script" type="text/javascript">
+	function invoke() {
+		process.create("first");
+		process.create("second");
+		process.create("third");
+	}
+	
+	function createFourth() {
+		if (
+			process.isComplete("first") &&
+			process.isComplete("second") &&
+			process.isComplete("third")
+		) {
+			process.create("fourth");
+		}
+	}
+</script>
+</head>
+<body>
+
+<form
+	id="first"
+	data-name="First Task"
+	data-role="agent">
+		<script id="task-script" type="text/javascript">
+			function completed() {
+				createFourth();
+			}
+		</script>
+		
+		<h3>The first task</h3>
+		
+		<script type="text/javascript">
+			$(document).ready(function() {
+			});
+		</script>
+</form>
+
+<form
+	id="second"
+	data-name="Second Task"
+	data-role="agent">
+		<script id="task-script" type="text/javascript">
+			function completed() {
+				createFourth();
+			}
+		</script>
+		
+		<h3>The second task</h3>
+		
+		<script type="text/javascript">
+			$(document).ready(function() {
+			});
+		</script>
+</form>
+
+<form
+	id="third"
+	data-name="Third Task"
+	data-role="agent">
+		<script id="task-script" type="text/javascript">
+			function completed() {
+				createFourth();
+			}
+		</script>
+		
+		<h3>The third task</h3>
+		
+		<script type="text/javascript">
+			$(document).ready(function() {
+			});
+		</script>
+</form>
+
+<form
+	id="fourth"
+	data-name="Fourth Task"
+	data-role="agent">
+		<script id="task-script" type="text/javascript">
+			function completed() {
+			}
+		</script>
+		
+		<h3>The fourth task</h3>
+		
+		<script type="text/javascript">
+			$(document).ready(function() {
+			});
+		</script>
+</form>
+
+</body>
+</html>
